@@ -31,6 +31,17 @@ Add the dependency (for all available versions see [https://jitpack.io/#Serbroda
 Usage
 ------
 
+test.xlsx
+```text
++----+------------+------------+------------+---------+
+| ID | FIRST_NAME | LAST_NAME  |    DATE    |  SALES  |
++----+------------+------------+------------+---------+
+|  1 | Max        | Mustermann | 01.02.2018 | 12,95 € |
+|  2 | John       | Doe        | 27.06.2018 | 29,50 € |
++----+------------+------------+------------+---------+
+
+```
+
 ```java
  public static class Data {
     public int id;
