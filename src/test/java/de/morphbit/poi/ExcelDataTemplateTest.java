@@ -1,7 +1,9 @@
 package de.morphbit.poi;
 
-import de.morphbit.poi.mapper.ExcelRowMapper;
-import org.apache.poi.ss.usermodel.Row;
+import de.morphbit.poi.exception.ExcelReadException;
+import de.morphbit.poi.model.ExcelFileSource;
+import de.morphbit.poi.model.ExcelSource;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -17,14 +19,23 @@ public class ExcelDataTemplateTest {
 
     private static final String FILE_PATH = "test1.xlsx";
 
-    @Test
-    public void itShouldReadList() throws IOException, Exception {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL url = classLoader.getResource(FILE_PATH);
-        File file = new File(url.getFile());
+    private ExcelSource testSource1;
 
+    @Before
+    public void setUp() {
+        testSource1 = new ExcelFileSource(getFile(FILE_PATH));
+    }
+
+    private File getFile(String filePath) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL url = classLoader.getResource(filePath);
+        return new File(url.getFile());
+    }
+
+    @Test
+    public void itShouldReadList() throws IOException, ExcelReadException {
         List<Data> data = new ExcelDataTemplate()
-                .read(file, 0, row -> {
+                .read(testSource1, 0, row -> {
                     Data d = new Data();
                     d.setId((int) row.getCell(0).getNumericCellValue());
                     d.setFirstName(row.getCell(1).getStringCellValue());
