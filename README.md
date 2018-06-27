@@ -45,12 +45,11 @@ private ExcelSource source = new ExcelFileSource("test.xlsx");
 List<Data> data = new ExcelDataTemplate()
     .read(source, 0, row -> {
         Data d = new Data();
-        d.setId((int) row.getCell(0).getNumericCellValue());
-        d.setFirstName(row.getCell(1).getStringCellValue());
-        d.setLastName(row.getCell(2).getStringCellValue());
-        d.setDate(row.getCell(3).getDateCellValue());
-        d.setSales(
-                new BigDecimal(row.getCell(4).getNumericCellValue()));
+        d.id = (int) row.getCell(0).getNumericCellValue();
+        d.firstName = row.getCell(1).getStringCellValue();
+        d.lastName = row.getCell(2).getStringCellValue();
+        d.date = row.getCell(3).getDateCellValue();
+        d.sales = new BigDecimal(row.getCell(4).getNumericCellValue());
         return d;
     }, true);
 
