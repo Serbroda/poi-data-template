@@ -7,6 +7,7 @@ import de.morphbit.poi.model.ExcelSource;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class ExcelSourceTest extends AbstractResourceTest {
                 .hasMessageContaining("Export Restrictions");
     }
 
+    @Ignore
     @Test
     public void itShouldNotFailForEncryptedFileWithPasswordSet() {
         ExcelSource source = new ExcelFileSource(getResourceFile(FILE_PATH2), "poidatatemplate");
