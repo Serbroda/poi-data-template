@@ -20,17 +20,13 @@ import java.util.Map;
 public class ExcelDataTemplate {
 
     public static final ExcelRowMapper<Map<String, Integer>> DEFAULT_HEADER_MAPPER =
-            new ExcelRowMapper<Map<String, Integer>>() {
-
-                @Override
-                public Map<String, Integer> map(Row row) {
-                    Map<String, Integer> headers = new HashMap<>();
-                    row.forEach(cell -> {
-                        headers.put(cell.getRichStringCellValue().getString(),
-                                cell.getColumnIndex());
-                    });
-                    return headers;
-                }
+            row -> {
+                Map<String, Integer> headers = new HashMap<>();
+                row.forEach(cell -> {
+                    headers.put(cell.getRichStringCellValue().getString(),
+                            cell.getColumnIndex());
+                });
+                return headers;
             };
 
     private final ExcelRowMapper<Map<String, Integer>> headerMapper;
