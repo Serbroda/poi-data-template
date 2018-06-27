@@ -54,9 +54,17 @@ public abstract class ExcelSource {
         if(source == null) {
             throw  new NullPointerException("Field 'source' must not be null");
         } else if(InputStream.class.equals(source.getClass())) {
-            return WorkbookFactory.create((InputStream)source);
+            if(this.password == null) {
+                return WorkbookFactory.create((InputStream)source);
+            } else {
+                return WorkbookFactory.create((InputStream)source, this.password);
+            }
         } else if (File.class.equals(source.getClass())) {
-            return WorkbookFactory.create((File)source);
+            if(this.password == null) {
+                return WorkbookFactory.create((File)source);
+            } else {
+                return WorkbookFactory.create((File)source, this.password);
+            }
         } else {
             throw new ExcelSourceNotSupportedException("ExcelSource of type " + source.getClass().getName() + " not supported");
         }
