@@ -15,22 +15,18 @@ public abstract class ExcelSource {
     private boolean readonly;
 
     public ExcelSource() {
-        this(null, null, false);
+        this( null, false);
     }
 
-    public ExcelSource(Object source) {
-        this(source, null, false);
+    public ExcelSource(String password) {
+        this( password, false);
     }
 
-    public ExcelSource(Object source, String password) {
-        this(source, password, false);
+    public ExcelSource(boolean readonly) {
+        this( null, readonly);
     }
 
-    public ExcelSource(Object source, boolean readonly) {
-        this(source, null, readonly);
-    }
-
-    public ExcelSource(Object source, String password, boolean readonly) {
+    public ExcelSource(String password, boolean readonly) {
         this.password = password;
         this.readonly = readonly;
     }

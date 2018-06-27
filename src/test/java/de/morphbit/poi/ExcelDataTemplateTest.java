@@ -6,30 +6,22 @@ import de.morphbit.poi.model.ExcelSource;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ExcelDataTemplateTest {
+public class ExcelDataTemplateTest extends AbstractResourceTest {
 
-    private static final String FILE_PATH = "test1.xlsx";
+    private static final String FILE_PATH1 = "test1.xlsx";
 
     private ExcelSource testSource1;
 
     @Before
     public void setUp() {
-        testSource1 = new ExcelFileSource(getFile(FILE_PATH));
-    }
-
-    private File getFile(String filePath) {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL url = classLoader.getResource(filePath);
-        return new File(url.getFile());
+        testSource1 = new ExcelFileSource(getResourceFile(FILE_PATH1));
     }
 
     @Test
