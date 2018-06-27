@@ -18,7 +18,7 @@ Add the jitpack repository.
 </repositories>
 ```
 
-Add the dependency (for all available versions see [https://jitpack.io/#Serbroda/poi-data-template](https://jitpack.io/#Serbroda/thymeleaf-component-dialect)).
+Add the dependency (for all available versions see [https://jitpack.io/#Serbroda/poi-data-template](https://jitpack.io/#Serbroda/poi-data-template)).
 
 ```html
 <dependency>
