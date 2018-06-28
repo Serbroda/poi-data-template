@@ -53,13 +53,13 @@ public abstract class ExcelSource {
         Object source = getSource();
         if(source == null) {
             throw  new NullPointerException("Field 'source' must not be null");
-        } else if(InputStream.class.equals(source.getClass())) {
+        } else if(source instanceof InputStream) {
             if(this.password == null) {
                 return WorkbookFactory.create((InputStream)source);
             } else {
                 return WorkbookFactory.create((InputStream)source, this.password);
             }
-        } else if (File.class.equals(source.getClass())) {
+        } else if (source instanceof File) {
             if(this.password == null) {
                 return WorkbookFactory.create((File)source);
             } else {
