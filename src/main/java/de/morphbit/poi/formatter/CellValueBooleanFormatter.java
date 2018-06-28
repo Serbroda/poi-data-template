@@ -19,6 +19,9 @@ public class CellValueBooleanFormatter extends CellValueFormatter<Boolean> {
 	
 	@Override
 	public Boolean format(Cell cell) {
+		if(cell == null) {
+			return null;
+		}
 		CellType type = getEffectiveCellType(cell);
 		if(type == CellType.BOOLEAN) {
 			return cell.getBooleanCellValue();
