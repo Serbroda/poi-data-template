@@ -54,6 +54,52 @@ public class CellValueFormatterTest {
 		assertThat(formattedValue).isEqualTo("1337,23");
 	}
 	
+	@Test
+	public void itShouldFormatInteger() {
+		Cell cell = createCell();
+		cell.setCellType(CellType.NUMERIC);
+		cell.setCellValue(1234);
+		
+		Integer formattedValue = CellValueUtils.formatCellAsInteger(cell);
+		assertThat(formattedValue).isNotNull();
+		assertThat(formattedValue).isEqualTo(1234);
+		
+		cell = createCell();
+		cell.setCellType(CellType.STRING);
+		cell.setCellValue("874");
+		
+		formattedValue = CellValueUtils.formatCellAsInteger(cell);
+		assertThat(formattedValue).isNotNull();
+		assertThat(formattedValue).isEqualTo(874);
+	}
+	
+	@Test
+	public void itShouldFormatDouble() {
+		Cell cell = createCell();
+		cell.setCellType(CellType.NUMERIC);
+		cell.setCellValue(1234.32);
+		
+		Double formattedValue = CellValueUtils.formatCellAsDouble(cell);
+		assertThat(formattedValue).isNotNull();
+		assertThat(formattedValue).isEqualTo(1234.32);
+		
+		cell = createCell();
+		cell.setCellType(CellType.STRING);
+		cell.setCellValue("874.12");
+		
+		formattedValue = CellValueUtils.formatCellAsDouble(cell);
+		assertThat(formattedValue).isNotNull();
+		assertThat(formattedValue).isEqualTo(874.12);
+		
+		cell = createCell();
+		cell.setCellType(CellType.STRING);
+		cell.setCellValue("50");
+		
+		formattedValue = CellValueUtils.formatCellAsDouble(cell);
+		assertThat(formattedValue).isNotNull();
+		assertThat(formattedValue).isEqualTo(50);
+	}
+	
 	private Cell createCell() {
 		Cell cell = row.createCell(cellCounter);
 		cellCounter++;
