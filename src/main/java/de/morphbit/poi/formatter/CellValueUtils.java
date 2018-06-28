@@ -19,6 +19,14 @@ public final class CellValueUtils {
 		return formatCell(CellValueStringFormatter.getInstance(), cell, defaultValue);
 	}
 	
+	public static Boolean formatCellAsBoolean(Cell cell) {
+		return formatCell(CellValueBooleanFormatter.getInstance(), cell);
+	}
+	
+	public static Boolean formatCellAsBoolean(Cell cell, Boolean defaultValue) {
+		return formatCell(CellValueBooleanFormatter.getInstance(), cell, defaultValue);
+	}
+	
 	public static Date formatCellAsDate(Cell cell) {
 		return formatCell(CellValueDateFormatter.getInstance(), cell);
 	}
