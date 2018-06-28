@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CellValueFormatterTest {
 
 	private Row row;
+	private int cellCounter = 0;
 	
 	@SuppressWarnings("resource")
 	@Before
@@ -23,11 +24,12 @@ public class CellValueFormatterTest {
 		Workbook workbook = new HSSFWorkbook();
 		Sheet sheet = workbook.createSheet();
 		row = sheet.createRow(0);
+		cellCounter = 0;
 	}
 	
 	@Test
 	public void itShouldFormatString() {
-		Cell cell = row.createCell(0);
+		Cell cell = createCell();
 		cell.setCellType(CellType.STRING);
 		cell.setCellValue("Test");
 		
@@ -35,7 +37,7 @@ public class CellValueFormatterTest {
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("Test");
 		
-		cell = row.createCell(1);
+		cell = createCell();
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(874);
 		
@@ -43,7 +45,7 @@ public class CellValueFormatterTest {
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("874");
 		
-		cell = row.createCell(2);
+		cell = createCell();
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(1337.23);
 		
@@ -51,4 +53,11 @@ public class CellValueFormatterTest {
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("1337,23");
 	}
+	
+	private Cell createCell() {
+		Cell cell = row.createCell(cellCounter);
+		cellCounter++;
+		return cell;
+	}
+	
 }
