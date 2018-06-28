@@ -23,7 +23,7 @@ public class CellValueDoubleFormatter extends CellValueFormatter<Double> {
 		CellType cellType = getEffectiveCellType(cell);
 		if(cellType == CellType.NUMERIC) {
 			return cell.getNumericCellValue();
-		} else if(cellType == CellType.STRING && cell.getStringCellValue().matches("^\\d*[,|.]{1}\\d*$")) {
+		} else if(cellType == CellType.STRING && cell.getStringCellValue().matches("^\\d*[,|.]{0,1}\\d*$")) {
 			return Double.parseDouble(cell.getStringCellValue());
 		}
 		return null;
