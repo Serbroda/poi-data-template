@@ -22,6 +22,9 @@ public class CellValueBigDecimalFormatter extends CellValueFormatter<BigDecimal>
 	
 	@Override
 	public BigDecimal format(Cell cell) {
+		if(cell == null) {
+			return null;
+		}
 		CellType cellType = getEffectiveCellType(cell);
 		if(cellType == CellType.NUMERIC) {
 			return new BigDecimal(cell.getNumericCellValue());

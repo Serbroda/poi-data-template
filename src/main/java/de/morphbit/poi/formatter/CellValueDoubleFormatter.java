@@ -20,6 +20,9 @@ public class CellValueDoubleFormatter extends CellValueFormatter<Double> {
 	
 	@Override
 	public Double format(Cell cell) {
+		if(cell == null) {
+			return null;
+		}
 		CellType cellType = getEffectiveCellType(cell);
 		if(cellType == CellType.NUMERIC) {
 			return cell.getNumericCellValue();

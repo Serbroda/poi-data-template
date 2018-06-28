@@ -22,6 +22,9 @@ public class CellValueDateFormatter extends CellValueFormatter<Date> {
 	
 	@Override
 	public Date format(Cell cell) {
+		if(cell == null) {
+			return null;
+		}
 		if(DateUtil.isCellDateFormatted(cell)) {
 			return cell.getDateCellValue();
 		}

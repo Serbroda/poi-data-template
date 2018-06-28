@@ -20,6 +20,9 @@ public class CellValueIntegerFormatter extends CellValueFormatter<Integer> {
 	
 	@Override
 	public Integer format(Cell cell) {
+		if(cell == null) {
+			return null;
+		}
 		CellType cellType = getEffectiveCellType(cell);
 		if(cellType == CellType.NUMERIC) {
 			return (int)cell.getNumericCellValue();

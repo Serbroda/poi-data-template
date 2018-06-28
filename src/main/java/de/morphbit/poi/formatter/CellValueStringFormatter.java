@@ -24,6 +24,9 @@ public class CellValueStringFormatter extends CellValueFormatter<String> {
 	
 	@Override
 	public String format(Cell cell) {
+		if(cell == null) {
+			return null;
+		}
 		if(getEffectiveCellType(cell) == CellType.STRING) {
 			return cell.getStringCellValue();
 		}
