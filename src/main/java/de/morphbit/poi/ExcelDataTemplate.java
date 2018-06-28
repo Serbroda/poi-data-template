@@ -103,6 +103,48 @@ public class ExcelDataTemplate {
             return doReadListFromSheet(getSheet(workbook, sheetName), rowMapper);
         }
     }
+    
+    public <T> Map<String, Integer> readFirstLineAsHeader(String sheetName) throws ExcelReadException, IOException {
+    	return readFirstLineAsHeader(sheetName, DEFAULT_HEADER_MAPPER);
+    }
+    
+    public <T> Map<String, Integer> readFirstLineAsHeader(String sheetName, ExcelRowMapper<Map<String, Integer>> headerMapper)
+    		throws ExcelReadException, IOException {
+    	return readFirstLineAsHeader(this.source, sheetName, headerMapper);
+    }
+    
+    public <T> Map<String, Integer> readFirstLineAsHeader(ExcelSource source, String sheetName) throws ExcelReadException, IOException {
+		return readFirstLineAsHeader(source, sheetName, DEFAULT_HEADER_MAPPER);
+	}
+
+    public <T> Map<String, Integer> readFirstLineAsHeader(ExcelSource source, String sheetName, ExcelRowMapper<Map<String, Integer>> headerMapper) throws ExcelReadException, IOException {
+    	try (Workbook workbook = openWorkbook(source)) {
+    		Sheet sheet = getSheet(workbook, sheetName);
+    		Row row = sheet.getRow(0);
+    		return headerMapper.map(row);
+    	}
+    }
+    
+    public <T> Map<String, Integer> readFirstLineAsHeader(int sheetIndex) throws ExcelReadException, IOException {
+    	return readFirstLineAsHeader(sheetIndex, DEFAULT_HEADER_MAPPER);
+    }
+    
+    public <T> Map<String, Integer> readFirstLineAsHeader(int sheetIndex, ExcelRowMapper<Map<String, Integer>> headerMapper)
+    		throws ExcelReadException, IOException {
+    	return readFirstLineAsHeader(this.source, sheetIndex, headerMapper);
+    }
+    
+    public <T> Map<String, Integer> readFirstLineAsHeader(ExcelSource source, int sheetIndex) throws ExcelReadException, IOException {
+		return readFirstLineAsHeader(source, sheetIndex, DEFAULT_HEADER_MAPPER);
+	}
+
+    public <T> Map<String, Integer> readFirstLineAsHeader(ExcelSource source, int sheetIndex, ExcelRowMapper<Map<String, Integer>> headerMapper) throws ExcelReadException, IOException {
+    	try (Workbook workbook = openWorkbook(source)) {
+    		Sheet sheet = getSheet(workbook, sheetIndex);
+    		Row row = sheet.getRow(0);
+    		return headerMapper.map(row);
+    	}
+    }
 
     private Workbook openWorkbook(ExcelSource source) throws ExcelReadException {
         if (source == null) {

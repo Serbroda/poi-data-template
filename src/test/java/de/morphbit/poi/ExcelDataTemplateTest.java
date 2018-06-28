@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,6 +45,20 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
         assertThat(data.get(1).getId()).isEqualTo(2);
         assertThat(data.get(0).getFirstName()).isEqualTo("Max");
         assertThat(data.get(0).getLastName()).isEqualTo("Mustermann");
+    }
+    
+    @Test
+    public void itShouldReadFirstLineAsHeader() throws IOException, ExcelReadException {
+        Map<String, Integer> headers = new ExcelDataTemplate()
+                .readFirstLineAsHeader(testSource1, 0);
+
+        assertThat(headers).isNotNull();
+        assertThat(headers).hasSize(5);
+        assertThat(headers.containsKey("ID")).isTrue();
+        assertThat(headers.containsKey("FIRST_NAME")).isTrue();
+        assertThat(headers.containsKey("LAST_NAME")).isTrue();
+        assertThat(headers.containsKey("DATE")).isTrue();
+        assertThat(headers.containsKey("SALES")).isTrue();
     }
 
 
