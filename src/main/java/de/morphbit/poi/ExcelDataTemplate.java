@@ -4,6 +4,7 @@ import de.morphbit.poi.exception.ExcelReadException;
 import de.morphbit.poi.exception.ExcelSourceNotSupportedException;
 import de.morphbit.poi.mapper.ExcelRowMapper;
 import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
+import de.morphbit.poi.model.ExcelDataTemplateOptions;
 import de.morphbit.poi.model.ExcelSource;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ExcelDataTemplate {
 
@@ -48,32 +51,60 @@ public class ExcelDataTemplate {
         this.source = source;
         this.headerMapper = headerMapper;
     }
-
+    
     public <T> List<T> read(int sheetIndex,
-                            ExcelRowMapper<T> rowMapper, boolean ignoreFirstRow)
-            throws ExcelReadException, IOException {
-        return read(this.source, sheetIndex, rowMapper, ignoreFirstRow);
+            ExcelRowMapper<T> rowMapper)
+            		throws ExcelReadException, IOException {
+    	return read(this.source, sheetIndex, rowMapper, null);
     }
 
     public <T> List<T> read(ExcelSource source, int sheetIndex,
-                            ExcelRowMapper<T> rowMapper, boolean ignoreFirstRow)
-            throws ExcelReadException, IOException {
-        try (Workbook workbook = openWorkbook(source)) {
-            return doReadListFromSheet(getSheet(workbook, sheetIndex), rowMapper, ignoreFirstRow);
-        }
+            ExcelRowMapper<T> rowMapper)
+            		throws ExcelReadException, IOException {
+    	try (Workbook workbook = openWorkbook(source)) {
+    		return doReadListFromSheet(getSheet(workbook, sheetIndex), rowMapper, null);
+    	}
     }
 
-    public <T> List<T> read(String sheetName,
-                            ExcelRowMapper<T> rowMapper, boolean ignoreFirstRow)
+    public <T> List<T> read(int sheetIndex,
+                            ExcelRowMapper<T> rowMapper, ExcelDataTemplateOptions options)
             throws ExcelReadException, IOException {
-        return read(this.source, sheetName, rowMapper, ignoreFirstRow);
+        return read(this.source, sheetIndex, rowMapper, options);
+    }
+
+    public <T> List<T> read(ExcelSource source, int sheetIndex,
+                            ExcelRowMapper<T> rowMapper, ExcelDataTemplateOptions options)
+            throws ExcelReadException, IOException {
+        try (Workbook workbook = openWorkbook(source)) {
+            return doReadListFromSheet(getSheet(workbook, sheetIndex), rowMapper, options);
+        }
+    }
+    
+    public <T> List<T> read(String sheetName,
+            ExcelRowMapper<T> rowMapper)
+            		throws ExcelReadException, IOException {
+    	return read(this.source, sheetName, rowMapper, null);
     }
 
     public <T> List<T> read(ExcelSource source, String sheetName,
-                            ExcelRowMapper<T> rowMapper, boolean ignoreFirstRow)
+            ExcelRowMapper<T> rowMapper)
+            		throws ExcelReadException, IOException {
+    	try (Workbook workbook = openWorkbook(source)) {
+    		return doReadListFromSheet(getSheet(workbook, sheetName), rowMapper, null);
+    	}
+    }
+
+    public <T> List<T> read(String sheetName,
+                            ExcelRowMapper<T> rowMapper, ExcelDataTemplateOptions options)
+            throws ExcelReadException, IOException {
+        return read(this.source, sheetName, rowMapper, options);
+    }
+
+    public <T> List<T> read(ExcelSource source, String sheetName,
+                            ExcelRowMapper<T> rowMapper, ExcelDataTemplateOptions options)
             throws ExcelReadException, IOException {
         try (Workbook workbook = openWorkbook(source)) {
-            return doReadListFromSheet(getSheet(workbook, sheetName), rowMapper, ignoreFirstRow);
+            return doReadListFromSheet(getSheet(workbook, sheetName), rowMapper, options);
         }
     }
 
@@ -86,9 +117,21 @@ public class ExcelDataTemplate {
     public <T> List<T> read(ExcelSource source, int sheetIndex,
                             ExcelRowMapperWithHeader<T> rowMapper)
             throws ExcelReadException, IOException {
-        try (Workbook workbook = openWorkbook(source)) {
-            return doReadListFromSheet(getSheet(workbook, sheetIndex), rowMapper);
-        }
+        return read(source, sheetIndex, rowMapper, null);
+    }
+    
+    public <T> List<T> read(int sheetIndex,
+            ExcelRowMapperWithHeader<T> rowMapper, ExcelDataTemplateOptions options)
+            		throws ExcelReadException, IOException {
+    	return read(this.source, sheetIndex, rowMapper);
+    }
+
+    public <T> List<T> read(ExcelSource source, int sheetIndex,
+            ExcelRowMapperWithHeader<T> rowMapper, ExcelDataTemplateOptions options)
+            		throws ExcelReadException, IOException {
+    	try (Workbook workbook = openWorkbook(source)) {
+    		return doReadListFromSheet(getSheet(workbook, sheetIndex), rowMapper, options);
+    	}
     }
 
     public <T> List<T> read(String sheetName,
@@ -99,9 +142,20 @@ public class ExcelDataTemplate {
 
     public <T> List<T> read(ExcelSource source, String sheetName,
                             ExcelRowMapperWithHeader<T> rowMapper) throws ExcelReadException, IOException {
-        try (Workbook workbook = openWorkbook(source)) {
-            return doReadListFromSheet(getSheet(workbook, sheetName), rowMapper);
-        }
+        return read(source, sheetName, rowMapper, null);
+    }
+    
+    public <T> List<T> read(String sheetName,
+            ExcelRowMapperWithHeader<T> rowMapper, ExcelDataTemplateOptions options)
+            		throws ExcelReadException, IOException {
+    	return read(this.source, sheetName, rowMapper, options);
+    }
+
+    public <T> List<T> read(ExcelSource source, String sheetName,
+            ExcelRowMapperWithHeader<T> rowMapper, ExcelDataTemplateOptions options) throws ExcelReadException, IOException {
+    	try (Workbook workbook = openWorkbook(source)) {
+    		return doReadListFromSheet(getSheet(workbook, sheetName), rowMapper, options);
+    	}
     }
     
     public <T> Map<String, Integer> readFirstLineAsHeader(String sheetName) throws ExcelReadException, IOException {
@@ -157,25 +211,33 @@ public class ExcelDataTemplate {
         }
     }
 
-    private <T> List<T> doReadListFromSheet(Sheet sheet, ExcelRowMapper<T> rowMapper, boolean ignoreFirstRow) {
+    private <T> List<T> doReadListFromSheet(Sheet sheet, ExcelRowMapper<T> rowMapper, ExcelDataTemplateOptions options) {
         List<T> objects = new ArrayList<>();
         for (Row row : sheet) {
-            if (row.getRowNum() > 0 || !ignoreFirstRow) {
-                objects.add(rowMapper.map(row));
-            }
+        	if(options == null || row.getRowNum() + 1 > options.getIgnoreFirstLinesCount()) {
+        		objects.add(rowMapper.map(row));
+        	}
         }
         return objects;
     }
 
-    private <T> List<T> doReadListFromSheet(Sheet sheet, ExcelRowMapperWithHeader<T> rowMapper) {
+    @SuppressWarnings("unchecked")
+	private <T> List<T> doReadListFromSheet(Sheet sheet, ExcelRowMapperWithHeader<T> rowMapper, ExcelDataTemplateOptions options) {
         List<T> objects = new ArrayList<>();
         Map<String, Integer> headers = null;
+        boolean headerRead = false;
         for (Row row : sheet) {
-            if (row.getRowNum() < 1) {
-                headers = mapHeaders(row);
-            } else {
-                objects.add(rowMapper.map(row, headers));
-            }
+        	if(options == null || row.getRowNum() + 1 > options.getIgnoreFirstLinesCount()) {
+        		if (!headerRead) {
+                    headers = mapHeaders(row);
+                    headerRead = true;
+                } else {
+                	T obj = rowMapper.map(row, headers);
+                	if(options.getFilter() == null || (options.getFilter() != null && ((Predicate<? super T>)options.getFilter()).test(obj))) {
+                		objects.add(rowMapper.map(row, headers));
+                	}                
+                }
+        	}
         }
         return objects;
     }

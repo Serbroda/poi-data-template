@@ -1,6 +1,7 @@
 package de.morphbit.poi;
 
 import de.morphbit.poi.exception.ExcelReadException;
+import de.morphbit.poi.model.ExcelDataTemplateOptions;
 import de.morphbit.poi.model.ExcelFileSource;
 import de.morphbit.poi.model.ExcelSource;
 import org.junit.Before;
@@ -37,7 +38,7 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
                     d.setSales(
                             new BigDecimal(row.getCell(4).getNumericCellValue()));
                     return d;
-                }, true);
+                }, new ExcelDataTemplateOptions().withIgnoreFirstLinesCount(1));
 
         assertThat(data).isNotNull();
         assertThat(data).hasSize(2);

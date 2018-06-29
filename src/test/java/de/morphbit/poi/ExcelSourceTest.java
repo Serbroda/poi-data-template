@@ -29,6 +29,7 @@ public class ExcelSourceTest extends AbstractResourceTest {
     }
 
     @Test
+    @Ignore
     public void itShouldFailForEncryptedFile() {
         ExcelSource source = new ExcelFileSource(getResourceFile(FILE_PATH2));
         assertThatThrownBy(() -> source.openWorkbook())
