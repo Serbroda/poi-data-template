@@ -233,7 +233,7 @@ public class ExcelDataTemplate {
                     headerRead = true;
                 } else {
                 	T obj = rowMapper.map(row, headers);
-                	if(options.getFilter() == null || (options.getFilter() != null && ((Predicate<? super T>)options.getFilter()).test(obj))) {
+                	if(options == null || options.getFilter() == null || (options.getFilter() != null && ((Predicate<? super T>)options.getFilter()).test(obj))) {
                 		objects.add(rowMapper.map(row, headers));
                 	}                
                 }
