@@ -1,9 +1,13 @@
 package de.morphbit.poi;
 
 import de.morphbit.poi.exception.ExcelReadException;
+import de.morphbit.poi.mapper.ExcelRowMapper;
+import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
 import de.morphbit.poi.model.ExcelDataTemplateOptions;
 import de.morphbit.poi.model.ExcelFileSource;
 import de.morphbit.poi.model.ExcelSource;
+
+import org.apache.poi.ss.usermodel.Row;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,6 +41,86 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
                     d.setDate(row.getCell(3).getDateCellValue());
                     d.setSales(
                             new BigDecimal(row.getCell(4).getNumericCellValue()));
+                    return d;
+                }, new ExcelDataTemplateOptions().withIgnoreFirstLinesCount(1));
+
+        assertThat(data).isNotNull();
+        assertThat(data).hasSize(2);
+        assertThat(data.get(0).getId()).isEqualTo(1);
+        assertThat(data.get(1).getId()).isEqualTo(2);
+        assertThat(data.get(0).getFirstName()).isEqualTo("Max");
+        assertThat(data.get(0).getLastName()).isEqualTo("Mustermann");
+    }
+    
+    @Test
+    public void itShouldReadListTwiceWithSameSize() throws IOException, ExcelReadException {
+    	ExcelRowMapper<Data> rowMapper = new ExcelRowMapper<Data>() {
+
+			@Override
+			public Data map(Row row) {
+				Data d = new Data();
+                d.setId((int) row.getCell(0).getNumericCellValue());
+                d.setFirstName(row.getCell(1).getStringCellValue());
+                d.setLastName(row.getCell(2).getStringCellValue());
+                d.setDate(row.getCell(3).getDateCellValue());
+                d.setSales(
+                        new BigDecimal(row.getCell(4).getNumericCellValue()));
+                return d;
+			}
+		};
+        List<Data> data = new ExcelDataTemplate()
+                .read(testSource1, 0, rowMapper, new ExcelDataTemplateOptions()
+                		.withIgnoreFirstLinesCount(1));
+        assertThat(data).isNotNull();
+        assertThat(data).hasSize(2);
+        
+        data = new ExcelDataTemplate()
+        		.read(testSource1, 0, rowMapper, new ExcelDataTemplateOptions()
+        				.withIgnoreFirstLinesCount(1));
+        assertThat(data).isNotNull();
+        assertThat(data).hasSize(2);
+    }
+    
+    @Test
+    public void itShouldReadRowsWithHeader() throws IOException, ExcelReadException {
+        List<Data> data = new ExcelDataTemplate()
+                .read(testSource1, 0, new ExcelRowMapperWithHeader<Data>() {
+
+					@Override
+					public Data map(Row row, Map<String, Integer> headers) {
+						Data d = new Data();
+	                    d.setId((int) row.getCell(headers.get("ID")).getNumericCellValue());
+	                    d.setFirstName(row.getCell(headers.get("FIRST_NAME")).getStringCellValue());
+	                    d.setLastName(row.getCell(headers.get("LAST_NAME")).getStringCellValue());
+	                    d.setDate(row.getCell(headers.get("SALES")).getDateCellValue());
+	                    d.setSales(
+	                            new BigDecimal(row.getCell(headers.get("ID")).getNumericCellValue()));
+	                    return d;
+					}
+				}, new ExcelDataTemplateOptions());
+
+        assertThat(data).isNotNull();
+        assertThat(data).hasSize(2);
+        assertThat(data.get(0).getId()).isEqualTo(1);
+        assertThat(data.get(1).getId()).isEqualTo(2);
+        assertThat(data.get(0).getFirstName()).isEqualTo("Max");
+        assertThat(data.get(0).getLastName()).isEqualTo("Mustermann");
+    }
+    
+    @Test
+    public void itShouldReadRowsWithHeaderSeparate() throws IOException, ExcelReadException {
+    	Map<String, Integer> headers = new ExcelDataTemplate()
+                .readFirstLineAsHeader(testSource1, 0);
+        
+        List<Data> data = new ExcelDataTemplate()
+                .read(testSource1, 0, row -> {
+                    Data d = new Data();
+                    d.setId((int) row.getCell(headers.get("ID")).getNumericCellValue());
+                    d.setFirstName(row.getCell(headers.get("FIRST_NAME")).getStringCellValue());
+                    d.setLastName(row.getCell(headers.get("LAST_NAME")).getStringCellValue());
+                    d.setDate(row.getCell(headers.get("SALES")).getDateCellValue());
+                    d.setSales(
+                            new BigDecimal(row.getCell(headers.get("ID")).getNumericCellValue()));
                     return d;
                 }, new ExcelDataTemplateOptions().withIgnoreFirstLinesCount(1));
 
