@@ -108,6 +108,27 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
     }
     
     @Test
+    public void itShouldReadRowsWithHeaderWithoutOptions() throws IOException, ExcelReadException {
+        List<Data> data = new ExcelDataTemplate()
+                .read(testSource1, 0, new ExcelRowMapperWithHeader<Data>() {
+
+					@Override
+					public Data map(Row row, Map<String, Integer> headers) {
+						Data d = new Data();
+	                    d.setId((int) row.getCell(headers.get("ID")).getNumericCellValue());
+	                    d.setFirstName(row.getCell(headers.get("FIRST_NAME")).getStringCellValue());
+	                    d.setLastName(row.getCell(headers.get("LAST_NAME")).getStringCellValue());
+	                    d.setDate(row.getCell(headers.get("SALES")).getDateCellValue());
+	                    d.setSales(
+	                            new BigDecimal(row.getCell(headers.get("ID")).getNumericCellValue()));
+	                    return d;
+					}
+				});
+
+        assertThat(data).isNotNull();
+    }
+    
+    @Test
     public void itShouldReadRowsWithHeaderSeparate() throws IOException, ExcelReadException {
     	Map<String, Integer> headers = new ExcelDataTemplate()
                 .readFirstLineAsHeader(testSource1, 0);
