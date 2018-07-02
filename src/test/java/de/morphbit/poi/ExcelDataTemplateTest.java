@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -126,6 +127,37 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
 				});
 
         assertThat(data).isNotNull();
+    }
+    
+    @Test
+    public void itShouldFilterList() throws IOException, ExcelReadException {
+        List<Data> data = new ExcelDataTemplate()
+                .read(testSource1, 0, new ExcelRowMapperWithHeader<Data>() {
+
+					@Override
+					public Data map(Row row, Map<String, Integer> headers) {
+						Data d = new Data();
+	                    d.setId((int) row.getCell(headers.get("ID")).getNumericCellValue());
+	                    d.setFirstName(row.getCell(headers.get("FIRST_NAME")).getStringCellValue());
+	                    d.setLastName(row.getCell(headers.get("LAST_NAME")).getStringCellValue());
+	                    d.setDate(row.getCell(headers.get("SALES")).getDateCellValue());
+	                    d.setSales(
+	                            new BigDecimal(row.getCell(headers.get("ID")).getNumericCellValue()));
+	                    return d;
+					}
+				}, new ExcelDataTemplateOptions().withFilter(new Predicate<Data>() {
+
+					@Override
+					public boolean test(Data t) {
+						return t.getId() > 1;
+					}
+				}));
+
+        assertThat(data).isNotNull();
+        assertThat(data).hasSize(1);
+        assertThat(data.get(0).getId()).isEqualTo(2);
+        assertThat(data.get(0).getFirstName()).isEqualTo("John");
+        assertThat(data.get(0).getLastName()).isEqualTo("Doe");
     }
     
     @Test
