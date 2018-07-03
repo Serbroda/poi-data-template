@@ -1,20 +1,20 @@
 package de.morphbit.poi;
 
-import de.morphbit.poi.exception.ExcelReadException;
-import de.morphbit.poi.exception.ExcelSourceNotSupportedException;
-import de.morphbit.poi.model.ExcelFileSource;
-import de.morphbit.poi.model.ExcelSource;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.io.IOException;
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import de.morphbit.poi.exception.ExcelSourceNotSupportedException;
+import de.morphbit.poi.model.ExcelFileSource;
+import de.morphbit.poi.model.ExcelSource;
 
 public class ExcelSourceTest extends AbstractResourceTest {
 

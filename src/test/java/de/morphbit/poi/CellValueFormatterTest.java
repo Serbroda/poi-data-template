@@ -1,5 +1,7 @@
 package de.morphbit.poi;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -10,8 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.morphbit.poi.formatter.CellValueUtils;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class CellValueFormatterTest {
 

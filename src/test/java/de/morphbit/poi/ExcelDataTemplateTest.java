@@ -1,15 +1,6 @@
 package de.morphbit.poi;
 
-import de.morphbit.poi.exception.ExcelReadException;
-import de.morphbit.poi.mapper.ExcelRowMapper;
-import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
-import de.morphbit.poi.model.ExcelDataTemplateOptions;
-import de.morphbit.poi.model.ExcelFileSource;
-import de.morphbit.poi.model.ExcelSource;
-
-import org.apache.poi.ss.usermodel.Row;
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -18,7 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.apache.poi.ss.usermodel.Row;
+import org.junit.Before;
+import org.junit.Test;
+
+import de.morphbit.poi.exception.ExcelReadException;
+import de.morphbit.poi.mapper.ExcelRowMapper;
+import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
+import de.morphbit.poi.model.ExcelDataTemplateOptions;
+import de.morphbit.poi.model.ExcelFileSource;
+import de.morphbit.poi.model.ExcelSource;
 
 public class ExcelDataTemplateTest extends AbstractResourceTest {
 
