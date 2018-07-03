@@ -19,6 +19,7 @@ import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
 import de.morphbit.poi.model.ExcelDataTemplateOptions;
 import de.morphbit.poi.model.ExcelFileSource;
 import de.morphbit.poi.model.ExcelSource;
+import de.morphbit.poi.utils.CellUtils;
 
 public class ExcelDataTemplateTest extends AbstractResourceTest {
 
@@ -52,6 +53,26 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
         assertThat(data.get(0).getFirstName()).isEqualTo("Max");
         assertThat(data.get(0).getLastName()).isEqualTo("Mustermann");
     }
+    
+	@Test
+	public void itShouldReadListFormattedWithCellUtils() throws IOException, ExcelReadException {
+		List<Data> data = new ExcelDataTemplate().read(testSource1, 0, row -> {
+				Data d = new Data();
+				d.setId(CellUtils.valueAsInteger(row.getCell(0)));
+				d.setFirstName(CellUtils.valueAsString(row.getCell(1)));
+				d.setLastName(CellUtils.valueAsString(row.getCell(2)));
+				d.setDate(CellUtils.valueAsDate(row.getCell(3)));
+				d.setSales(CellUtils.valueAsBigDecimal(row.getCell(4)));
+				return d;
+			}, new ExcelDataTemplateOptions().withIgnoreFirstLinesCount(1));
+
+		assertThat(data).isNotNull();
+		assertThat(data).hasSize(2);
+		assertThat(data.get(0).getId()).isEqualTo(1);
+		assertThat(data.get(1).getId()).isEqualTo(2);
+		assertThat(data.get(0).getFirstName()).isEqualTo("Max");
+		assertThat(data.get(0).getLastName()).isEqualTo("Mustermann");
+	}
     
     @Test
     public void itShouldReadListTwiceWithSameSize() throws IOException, ExcelReadException {
