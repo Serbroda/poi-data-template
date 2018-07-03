@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 
 import de.morphbit.poi.formatter.CellValueBigDecimalFormatter;
 import de.morphbit.poi.formatter.CellValueBooleanFormatter;
@@ -26,6 +27,23 @@ public final class CellUtils {
 	
 	private CellUtils() {
 		
+	}
+	
+	public static CellType getValueType(Cell cell) {
+		if(cell == null) {
+			return null;
+		}
+		if(isFormula(cell)) {
+			return cell.getCachedFormulaResultTypeEnum();
+		}
+		return cell.getCellTypeEnum();
+	}
+	
+	public static boolean isFormula(Cell cell) {
+		if(cell == null || cell.getCellTypeEnum() == null) {
+			return false;
+		}
+		return cell.getCellTypeEnum() == CellType.FORMULA;
 	}
 	
 	public static String valueAsString(Cell cell) {
