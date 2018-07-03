@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.morphbit.poi.formatter.CellValueUtils;
+import de.morphbit.poi.utils.CellValueUtils;
 
 public class CellValueFormatterTest {
 
