@@ -26,25 +26,27 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
     private static final String FILE_PATH1 = "test1.xlsx";
 
     private ExcelSource testSource1;
+    private ExcelRowMapper<Data> simpleRowMapper;
 
     @Before
     public void setUp() {
         testSource1 = new ExcelFileSource(getResourceFile(FILE_PATH1));
+        simpleRowMapper = row -> {
+            Data d = new Data();
+            d.setId((int) row.getCell(0).getNumericCellValue());
+            d.setFirstName(row.getCell(1).getStringCellValue());
+            d.setLastName(row.getCell(2).getStringCellValue());
+            d.setDate(row.getCell(3).getDateCellValue());
+            d.setSales(
+                    new BigDecimal(row.getCell(4).getNumericCellValue()));
+            return d;
+        };
     }
 
     @Test
     public void itShouldReadList() throws IOException, ExcelReadException {
         List<Data> data = new ExcelDataTemplate()
-                .read(testSource1, 0, row -> {
-                    Data d = new Data();
-                    d.setId((int) row.getCell(0).getNumericCellValue());
-                    d.setFirstName(row.getCell(1).getStringCellValue());
-                    d.setLastName(row.getCell(2).getStringCellValue());
-                    d.setDate(row.getCell(3).getDateCellValue());
-                    d.setSales(
-                            new BigDecimal(row.getCell(4).getNumericCellValue()));
-                    return d;
-                }, new ExcelDataTemplateOptions().withIgnoreFirstLinesCount(1));
+                .read(testSource1, 0, simpleRowMapper, new ExcelDataTemplateOptions().withIgnoreFirstLinesCount(1));
 
         assertThat(data).isNotNull();
         assertThat(data).hasSize(2);
@@ -76,28 +78,14 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
     
     @Test
     public void itShouldReadListTwiceWithSameSize() throws IOException, ExcelReadException {
-    	ExcelRowMapper<Data> rowMapper = new ExcelRowMapper<Data>() {
-
-			@Override
-			public Data map(Row row) {
-				Data d = new Data();
-                d.setId((int) row.getCell(0).getNumericCellValue());
-                d.setFirstName(row.getCell(1).getStringCellValue());
-                d.setLastName(row.getCell(2).getStringCellValue());
-                d.setDate(row.getCell(3).getDateCellValue());
-                d.setSales(
-                        new BigDecimal(row.getCell(4).getNumericCellValue()));
-                return d;
-			}
-		};
         List<Data> data = new ExcelDataTemplate()
-                .read(testSource1, 0, rowMapper, new ExcelDataTemplateOptions()
+                .read(testSource1, 0, simpleRowMapper, new ExcelDataTemplateOptions()
                 		.withIgnoreFirstLinesCount(1));
         assertThat(data).isNotNull();
         assertThat(data).hasSize(2);
         
         data = new ExcelDataTemplate()
-        		.read(testSource1, 0, rowMapper, new ExcelDataTemplateOptions()
+        		.read(testSource1, 0, simpleRowMapper, new ExcelDataTemplateOptions()
         				.withIgnoreFirstLinesCount(1));
         assertThat(data).isNotNull();
         assertThat(data).hasSize(2);
