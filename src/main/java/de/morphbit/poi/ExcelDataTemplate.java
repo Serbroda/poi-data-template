@@ -211,11 +211,15 @@ public class ExcelDataTemplate {
         }
     }
 
-    private <T> List<T> doReadListFromSheet(Sheet sheet, ExcelRowMapper<T> rowMapper, ExcelDataTemplateOptions options) {
+    @SuppressWarnings("unchecked")
+	private <T> List<T> doReadListFromSheet(Sheet sheet, ExcelRowMapper<T> rowMapper, ExcelDataTemplateOptions options) {
         List<T> objects = new ArrayList<>();
         for (Row row : sheet) {
         	if(options == null || row.getRowNum() + 1 > options.getIgnoreFirstLinesCount()) {
-        		objects.add(rowMapper.map(row));
+        		T obj = rowMapper.map(row);
+            	if(options == null || options.getFilter() == null || (options.getFilter() != null && ((Predicate<? super T>)options.getFilter()).test(obj))) {
+            		objects.add(obj);
+            	} 
         	}
         }
         return objects;
@@ -234,7 +238,7 @@ public class ExcelDataTemplate {
                 } else {
                 	T obj = rowMapper.map(row, headers);
                 	if(options == null || options.getFilter() == null || (options.getFilter() != null && ((Predicate<? super T>)options.getFilter()).test(obj))) {
-                		objects.add(rowMapper.map(row, headers));
+                		objects.add(obj);
                 	}                
                 }
         	}
