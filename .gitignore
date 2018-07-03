@@ -173,3 +173,4 @@ local.properties
 
 
 # End of https://www.gitignore.io/api/git,java,tortoisegit,intellij+all,eclipse
+/target/
