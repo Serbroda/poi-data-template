@@ -29,45 +29,26 @@ public class CellValueFormatterTest {
 	
 	@Test
 	public void itShouldFormatString() {
-		Cell cell = createCell();
-		cell.setCellType(CellType.STRING);
-		cell.setCellValue("Test");
-		
+		Cell cell = createCell("Test");
 		String formattedValue = CellUtils.valueAsString(cell);
-		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("Test");
 		
-		cell = createCell();
-		cell.setCellType(CellType.NUMERIC);
-		cell.setCellValue(874);
-		
+		cell = createCell(874);
 		formattedValue = CellUtils.valueAsString(cell);
-		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("874");
 		
-		cell = createCell();
-		cell.setCellType(CellType.NUMERIC);
-		cell.setCellValue(1337.23);
-		
+		cell = createCell(1337.23);
 		formattedValue = CellUtils.valueAsString(cell);
-		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("1337,23");
 	}
 	
 	@Test
 	public void itShouldFormatInteger() {
-		Cell cell = createCell();
-		cell.setCellType(CellType.NUMERIC);
-		cell.setCellValue(1234);
-		
+		Cell cell = createCell(1234);
 		Integer formattedValue = CellUtils.valueAsInteger(cell);
-		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(1234);
 		
-		cell = createCell();
-		cell.setCellType(CellType.STRING);
-		cell.setCellValue("874");
-		
+		cell = createCell("874");
 		formattedValue = CellUtils.valueAsInteger(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(874);
@@ -75,34 +56,43 @@ public class CellValueFormatterTest {
 	
 	@Test
 	public void itShouldFormatDouble() {
-		Cell cell = createCell();
-		cell.setCellType(CellType.NUMERIC);
-		cell.setCellValue(1234.32);
-		
+		Cell cell = createCell(1234.32);
 		Double formattedValue = CellUtils.valueAsDouble(cell);
-		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(1234.32);
 		
-		cell = createCell();
-		cell.setCellType(CellType.STRING);
-		cell.setCellValue("874.12");
-		
+		cell = createCell("874.12");
 		formattedValue = CellUtils.valueAsDouble(cell);
-		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(874.12);
 		
-		cell = createCell();
-		cell.setCellType(CellType.STRING);
-		cell.setCellValue("50");
-		
+		cell = createCell("50");
 		formattedValue = CellUtils.valueAsDouble(cell);
-		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(50);
 	}
 	
 	private Cell createCell() {
 		Cell cell = row.createCell(cellCounter);
 		cellCounter++;
+		return cell;
+	}
+	
+	private Cell createCell(Object value) {
+		Cell cell = createCell();
+		if (value instanceof String) {
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue((String) value);
+		} else if (value instanceof Integer) {
+			cell.setCellType(CellType.NUMERIC);
+			cell.setCellValue((Integer) value);
+		} else if (value instanceof Double) {
+			cell.setCellType(CellType.NUMERIC);
+			cell.setCellValue((Double) value);
+		} else if (value instanceof Long) {
+			cell.setCellType(CellType.NUMERIC);
+			cell.setCellValue((Long) value);
+		} else if (value instanceof Boolean) {
+			cell.setCellType(CellType.BOOLEAN);
+			cell.setCellValue((Boolean) value);
+		}
 		return cell;
 	}
 	
