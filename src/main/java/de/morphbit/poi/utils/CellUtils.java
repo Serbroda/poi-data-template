@@ -14,9 +14,9 @@ import de.morphbit.poi.formatter.CellValueFormulaFormatter;
 import de.morphbit.poi.formatter.CellValueIntegerFormatter;
 import de.morphbit.poi.formatter.CellValueStringFormatter;
 
-public final class CellValueUtils {
+public final class CellUtils {
 
-	private CellValueUtils() {
+	private CellUtils() {
 		
 	}
 	

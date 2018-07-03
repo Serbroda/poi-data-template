@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.morphbit.poi.utils.CellValueUtils;
+import de.morphbit.poi.utils.CellUtils;
 
 public class CellValueFormatterTest {
 
@@ -33,7 +33,7 @@ public class CellValueFormatterTest {
 		cell.setCellType(CellType.STRING);
 		cell.setCellValue("Test");
 		
-		String formattedValue = CellValueUtils.formatCellAsString(cell);
+		String formattedValue = CellUtils.formatCellAsString(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("Test");
 		
@@ -41,7 +41,7 @@ public class CellValueFormatterTest {
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(874);
 		
-		formattedValue = CellValueUtils.formatCellAsString(cell);
+		formattedValue = CellUtils.formatCellAsString(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("874");
 		
@@ -49,7 +49,7 @@ public class CellValueFormatterTest {
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(1337.23);
 		
-		formattedValue = CellValueUtils.formatCellAsString(cell);
+		formattedValue = CellUtils.formatCellAsString(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo("1337,23");
 	}
@@ -60,7 +60,7 @@ public class CellValueFormatterTest {
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(1234);
 		
-		Integer formattedValue = CellValueUtils.formatCellAsInteger(cell);
+		Integer formattedValue = CellUtils.formatCellAsInteger(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(1234);
 		
@@ -68,7 +68,7 @@ public class CellValueFormatterTest {
 		cell.setCellType(CellType.STRING);
 		cell.setCellValue("874");
 		
-		formattedValue = CellValueUtils.formatCellAsInteger(cell);
+		formattedValue = CellUtils.formatCellAsInteger(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(874);
 	}
@@ -79,7 +79,7 @@ public class CellValueFormatterTest {
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(1234.32);
 		
-		Double formattedValue = CellValueUtils.formatCellAsDouble(cell);
+		Double formattedValue = CellUtils.formatCellAsDouble(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(1234.32);
 		
@@ -87,7 +87,7 @@ public class CellValueFormatterTest {
 		cell.setCellType(CellType.STRING);
 		cell.setCellValue("874.12");
 		
-		formattedValue = CellValueUtils.formatCellAsDouble(cell);
+		formattedValue = CellUtils.formatCellAsDouble(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(874.12);
 		
@@ -95,7 +95,7 @@ public class CellValueFormatterTest {
 		cell.setCellType(CellType.STRING);
 		cell.setCellValue("50");
 		
-		formattedValue = CellValueUtils.formatCellAsDouble(cell);
+		formattedValue = CellUtils.formatCellAsDouble(cell);
 		assertThat(formattedValue).isNotNull();
 		assertThat(formattedValue).isEqualTo(50);
 	}
