@@ -98,7 +98,7 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
 	                            new BigDecimal(row.getCell(headers.get("ID")).getNumericCellValue()));
 	                    return d;
 					}
-				}, new ExcelDataTemplateOptions());
+				});
 
         assertThat(data).isNotNull();
         assertThat(data).hasSize(2);
