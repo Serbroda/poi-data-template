@@ -4,18 +4,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 
 public class CellValueBooleanFormatter extends CellValueFormatter<Boolean> {
-
-	private static CellValueBooleanFormatter instance;
 	
 	public static final String DEFAULT_FALSE_REGEX = "^(0)|(false)|(nein)|(falsch)|(no)|(n)$";
 	public static final String DEFAULT_TRUE_REGEX = "^(1)|(true)|(ja)|(richtig)|(yes)|(y)|(j)|(wahr)$";
-	
-	public static CellValueBooleanFormatter getInstance() {
-		if(instance == null) {
-			instance = new CellValueBooleanFormatter();
-		}
-		return instance;
-	}
 	
 	@Override
 	public Boolean format(Cell cell) {

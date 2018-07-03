@@ -5,19 +5,6 @@ import org.apache.poi.ss.usermodel.CellType;
 
 public class CellValueDoubleFormatter extends CellValueFormatter<Double> {
 
-	private static CellValueDoubleFormatter instance =
-	        new CellValueDoubleFormatter();
-	
-	private CellValueDoubleFormatter() {
-	}
-	
-	public static CellValueDoubleFormatter getInstance() {
-		if(instance == null) {
-			instance = new CellValueDoubleFormatter();
-		}
-		return instance;
-	}
-	
 	@Override
 	public Double format(Cell cell) {
 		if(cell == null) {

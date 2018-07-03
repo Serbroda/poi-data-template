@@ -7,19 +7,6 @@ import org.apache.poi.ss.usermodel.CellType;
 
 public class CellValueBigDecimalFormatter extends CellValueFormatter<BigDecimal> {
 
-	private static CellValueBigDecimalFormatter instance =
-	        new CellValueBigDecimalFormatter();
-	
-	private CellValueBigDecimalFormatter() {
-	}
-	
-	public static CellValueBigDecimalFormatter getInstance() {
-		if(instance == null) {
-			instance = new CellValueBigDecimalFormatter();
-		}
-		return instance;
-	}
-	
 	@Override
 	public BigDecimal format(Cell cell) {
 		if(cell == null) {

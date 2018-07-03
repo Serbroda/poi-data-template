@@ -6,20 +6,10 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 
 public class CellValueStringFormatter extends CellValueFormatter<String> {
 
-	private static CellValueStringFormatter instance =
-	        new CellValueStringFormatter();
-	
 	private final DataFormatter formatter;
 	
-	private CellValueStringFormatter() {
+	public CellValueStringFormatter() {
 		this.formatter = new DataFormatter();
-	}
-	
-	public static CellValueStringFormatter getInstance() {
-		if(instance == null) {
-			instance = new CellValueStringFormatter();
-		}
-		return instance;
 	}
 	
 	@Override
