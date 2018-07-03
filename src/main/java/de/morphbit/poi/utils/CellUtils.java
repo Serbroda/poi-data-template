@@ -28,67 +28,67 @@ public final class CellUtils {
 		
 	}
 	
-	public static String formatCellAsString(Cell cell) {
-		return formatCell(STRING_FORMATTER, cell);
+	public static String valueAsString(Cell cell) {
+		return value(STRING_FORMATTER, cell);
 	}
 	
-	public static String formatCellAsString(Cell cell, String defaultValue) {
-		return formatCell(STRING_FORMATTER, cell, defaultValue);
+	public static String valueAsString(Cell cell, String defaultValue) {
+		return value(STRING_FORMATTER, cell, defaultValue);
 	}
 	
-	public static Boolean formatCellAsBoolean(Cell cell) {
-		return formatCell(BOOLEAN_FORMATTER, cell);
+	public static Boolean valueAsBoolean(Cell cell) {
+		return value(BOOLEAN_FORMATTER, cell);
 	}
 	
-	public static Boolean formatCellAsBoolean(Cell cell, Boolean defaultValue) {
-		return formatCell(BOOLEAN_FORMATTER, cell, defaultValue);
+	public static Boolean valueAsBoolean(Cell cell, Boolean defaultValue) {
+		return value(BOOLEAN_FORMATTER, cell, defaultValue);
 	}
 	
-	public static Date formatCellAsDate(Cell cell) {
-		return formatCell(DATE_FORMATTER, cell);
+	public static Date valueAsDate(Cell cell) {
+		return value(DATE_FORMATTER, cell);
 	}
 	
-	public static Date formatCellAsDate(Cell cell, Date defaultValue) {
-		return formatCell(DATE_FORMATTER, cell, defaultValue);
+	public static Date valueAsDate(Cell cell, Date defaultValue) {
+		return value(DATE_FORMATTER, cell, defaultValue);
 	}
 	
-	public static Integer formatCellAsInteger(Cell cell) {
-		return formatCell(INTEGER_FORMATTER, cell);
+	public static Integer valueAsInteger(Cell cell) {
+		return value(INTEGER_FORMATTER, cell);
 	}
 	
-	public static Integer formatCellAsInteger(Cell cell, Integer defaultValue) {
-		return formatCell(INTEGER_FORMATTER, cell, defaultValue);
+	public static Integer valueAsInteger(Cell cell, Integer defaultValue) {
+		return value(INTEGER_FORMATTER, cell, defaultValue);
 	}
 	
-	public static Double formatCellAsDouble(Cell cell) {
-		return formatCell(DOUBLE_FORMATTER, cell);
+	public static Double valueAsDouble(Cell cell) {
+		return value(DOUBLE_FORMATTER, cell);
 	}
 	
-	public static Double formatCellAsDouble(Cell cell, Double defaultValue) {
-		return formatCell(DOUBLE_FORMATTER, cell, defaultValue);
+	public static Double valueAsDouble(Cell cell, Double defaultValue) {
+		return value(DOUBLE_FORMATTER, cell, defaultValue);
 	}
 	
-	public static BigDecimal formatCellAsBigDecimal(Cell cell) {
-		return formatCell(BIGDECIMAL_FORMATTER, cell);
+	public static BigDecimal valueAsBigDecimal(Cell cell) {
+		return value(BIGDECIMAL_FORMATTER, cell);
 	}
 	
-	public static BigDecimal formatCellAsBigDecimal(Cell cell, BigDecimal defaultValue) {
-		return formatCell(BIGDECIMAL_FORMATTER, cell, defaultValue);
+	public static BigDecimal valueAsBigDecimal(Cell cell, BigDecimal defaultValue) {
+		return value(BIGDECIMAL_FORMATTER, cell, defaultValue);
 	}
 	
-	public static String formatCellAsFormula(Cell cell) {
-		return formatCell(FORMULA_FORMATTER, cell);
+	public static String valueAsFormula(Cell cell) {
+		return value(FORMULA_FORMATTER, cell);
 	}
 	
-	public static String formatCellAsFormula(Cell cell, String defaultValue) {
-		return formatCell(FORMULA_FORMATTER, cell, defaultValue);
+	public static String valueAsFormula(Cell cell, String defaultValue) {
+		return value(FORMULA_FORMATTER, cell, defaultValue);
 	}
 	
-	public static <T> T formatCell(CellValueFormatter<T> formatter, Cell cell) {
+	public static <T> T value(CellValueFormatter<T> formatter, Cell cell) {
 		return formatter.format(cell);
 	}
 	
-	public static <T> T formatCell(CellValueFormatter<T> formatter, Cell cell, T defaultValue) {
+	public static <T> T value(CellValueFormatter<T> formatter, Cell cell, T defaultValue) {
 		return formatter.format(cell, defaultValue);
 	}
 }
