@@ -2,7 +2,9 @@ package de.morphbit.poi.exception;
 
 public class ExcelReadException extends Exception {
 
-    public ExcelReadException() {
+	private static final long serialVersionUID = 8500680919012756587L;
+
+	public ExcelReadException() {
     }
 
     public ExcelReadException(String message) {
