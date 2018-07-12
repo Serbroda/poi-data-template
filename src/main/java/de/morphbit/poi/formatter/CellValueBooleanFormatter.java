@@ -5,14 +5,14 @@ import org.apache.poi.ss.usermodel.CellType;
 
 public class CellValueBooleanFormatter extends CellValueFormatter<Boolean> {
 
-	public static final String DEFAULT_FALSE_REGEX = "^(0)|(false)|(nein)|(falsch)|(no)|(n)$";
-	public static final String DEFAULT_TRUE_REGEX = "^(1)|(true)|(ja)|(richtig)|(yes)|(y)|(j)|(wahr)$";
+	public static final String DEFAULT_FALSE_PATTERN = "^(0)|(false)|(nein)|(falsch)|(no)|(n)$";
+	public static final String DEFAULT_TRUE_PATTERN = "^(1)|(true)|(ja)|(richtig)|(yes)|(y)|(j)|(wahr)$";
 
 	private String falsePattern;
 	private String truePattern;
 
 	public CellValueBooleanFormatter() {
-		this(DEFAULT_FALSE_REGEX, DEFAULT_TRUE_REGEX);
+		this(DEFAULT_FALSE_PATTERN, DEFAULT_TRUE_PATTERN);
 	}
 
 	public CellValueBooleanFormatter(String falsePattern, String truePattern) {
