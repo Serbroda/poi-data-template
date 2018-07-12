@@ -133,7 +133,7 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
 
 	@Test
 	public void itShouldFilterList() throws IOException, ExcelReadException {
-		List<Data> data = new ExcelDataTemplate().read(testSource1, 0, new ExcelRowMapperWithHeader<Data>() {
+		ExcelRowMapperWithHeader<Data> rowMapper = new ExcelRowMapperWithHeader<Data>() {
 
 			@Override
 			public Data map(Row row, Map<String, Integer> headers) {
@@ -145,7 +145,8 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
 				d.setSales(new BigDecimal(row.getCell(headers.get("ID")).getNumericCellValue()));
 				return d;
 			}
-		}, new ExcelDataTemplateOptions().withFilter(new Predicate<Data>() {
+		};
+		List<Data> data = new ExcelDataTemplate().read(testSource1, 0, rowMapper, new ExcelDataTemplateOptions().withFilter(new Predicate<Data>() {
 
 			@Override
 			public boolean test(Data t) {
@@ -158,6 +159,31 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
 		assertThat(data.get(0).getId()).isEqualTo(2);
 		assertThat(data.get(0).getFirstName()).isEqualTo("John");
 		assertThat(data.get(0).getLastName()).isEqualTo("Doe");
+		
+		data = new ExcelDataTemplate().read(testSource1, 0, rowMapper, new ExcelDataTemplateOptions().withFilter(new Predicate<Data>() {
+
+			@Override
+			public boolean test(Data t) {
+				return "Max".equals(t.getFirstName());
+			}
+		}));
+
+		assertThat(data).isNotNull();
+		assertThat(data).hasSize(1);
+		assertThat(data.get(0).getId()).isEqualTo(1);
+		assertThat(data.get(0).getFirstName()).isEqualTo("Max");
+		assertThat(data.get(0).getLastName()).isEqualTo("Mustermann");
+		
+		data = new ExcelDataTemplate().read(testSource1, 0, rowMapper, new ExcelDataTemplateOptions().withFilter(new Predicate<Data>() {
+
+			@Override
+			public boolean test(Data t) {
+				return "Unknown".equals(t.getFirstName());
+			}
+		}));
+
+		assertThat(data).isNotNull();
+		assertThat(data).hasSize(0);
 	}
 
 	@Test
