@@ -1,23 +1,23 @@
 package de.morphbit.poi;
 
-import de.morphbit.poi.exception.ExcelReadException;
-import de.morphbit.poi.exception.ExcelSourceNotSupportedException;
-import de.morphbit.poi.mapper.ExcelRowMapper;
-import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
-import de.morphbit.poi.model.ExcelDataTemplateOptions;
-import de.morphbit.poi.model.ExcelSource;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
+import de.morphbit.poi.exception.ExcelReadException;
+import de.morphbit.poi.exception.ExcelSourceNotSupportedException;
+import de.morphbit.poi.mapper.ExcelRowMapper;
+import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
+import de.morphbit.poi.model.ExcelDataTemplateOptions;
+import de.morphbit.poi.model.ExcelSource;
 
 public class ExcelDataTemplate {
 
