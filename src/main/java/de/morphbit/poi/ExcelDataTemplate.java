@@ -1,5 +1,7 @@
 package de.morphbit.poi;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,13 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import de.morphbit.poi.exception.ExcelReadException;
 import de.morphbit.poi.exception.ExcelSourceNotSupportedException;
+import de.morphbit.poi.mapper.ExcelDataMapper;
 import de.morphbit.poi.mapper.ExcelRowMapper;
 import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
 import de.morphbit.poi.model.ExcelDataTemplateOptions;
@@ -156,6 +161,52 @@ public class ExcelDataTemplate {
     	try (Workbook workbook = openWorkbook(source)) {
     		return doReadListFromSheet(getSheet(workbook, sheetName), rowMapper, options);
     	}
+    }
+    
+    public <T> void write(File file,  List<T> data, ExcelDataMapper<T> dataMapper) throws IOException, ExcelReadException {
+    	write(file, null, data, dataMapper);
+    }
+    
+    public <T> void write(File file, List<String> headers, List<T> data, ExcelDataMapper<T> dataMapper) throws IOException, ExcelReadException {
+    	try (Workbook workbook = new HSSFWorkbook()) {
+    		Sheet sheet = getOrCreateSheet(workbook, 0);
+    		if(sheet == null) {
+    			sheet = workbook.createSheet();
+    		}
+    		int rowNum = 0;
+    		if(headers != null) {
+    			Row row = sheet.createRow(rowNum);
+    			int colNum = 0;
+    			for(String header : headers) {
+    				Cell cell = row.createCell(colNum);
+    				cell.setCellValue(header);
+    				colNum++;
+    			}
+    			rowNum++;
+    		}
+    		for(T d : data) {
+    			Row row = sheet.createRow(rowNum);
+    			dataMapper.map(row, d);
+    			rowNum++;
+    		}
+    		
+    		FileOutputStream fileOut = new FileOutputStream(file);
+            workbook.write(fileOut);
+            fileOut.close();
+    	}
+    }
+    
+    private Sheet getOrCreateSheet(Workbook workbook, int index) {
+    	Sheet sheet = null;
+    	try {
+    		sheet = workbook.getSheetAt(0);
+    	} catch(IllegalArgumentException e) {
+    		
+    	}
+    	if(sheet == null) {
+    		sheet = workbook.createSheet();
+    	}
+    	return sheet;
     }
     
     public <T> Map<String, Integer> readFirstLineAsHeader(String sheetName) throws ExcelReadException, IOException {

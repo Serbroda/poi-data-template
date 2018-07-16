@@ -2,18 +2,22 @@ package de.morphbit.poi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.morphbit.poi.exception.ExcelReadException;
+import de.morphbit.poi.mapper.ExcelDataMapper;
 import de.morphbit.poi.mapper.ExcelRowMapper;
 import de.morphbit.poi.mapper.ExcelRowMapperWithHeader;
 import de.morphbit.poi.model.ExcelDataTemplateOptions;
@@ -220,6 +224,49 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
 		assertThat(headers.containsKey("DATE")).isTrue();
 		assertThat(headers.containsKey("SALES")).isTrue();
 	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void itShouldWriteData() throws IOException, ExcelReadException {
+		List<String> headers = new ArrayList<>();
+		headers.add("ID");
+		headers.add("FIRST_NAME");
+		headers.add("LAST_NAME");
+		headers.add("DATE");
+		headers.add("SALES");
+		
+		List<Data> data = new ArrayList<>();
+		data.add(new Data(1337, "John", "Johnson", new Date(2018, 1, 1), new BigDecimal("12.95")));
+		data.add(new Data(4711, "David", "Davidson", new Date(2018, 1, 1), new BigDecimal("12.95")));
+		
+		new ExcelDataTemplate().write(new File("src/test/resources/test3.xlsx"), headers, data, new ExcelDataMapper<Data>() {
+
+			@Override
+			public void map(Row row, Data data) {
+				int cellCount = 0;
+				
+				Cell cell = row.createCell(cellCount++);
+				cell.setCellValue(data.getId());
+				cell = row.createCell(cellCount++);
+				cell.setCellValue(data.getFirstName());
+				cell = row.createCell(cellCount++);
+				cell.setCellValue(data.getLastName());
+				cell = row.createCell(cellCount++);
+				cell.setCellValue(data.getDate());
+				cell = row.createCell(cellCount++);
+				cell.setCellValue(data.getSales().doubleValue());
+			}
+		});
+		
+		List<Data> readData = new ExcelDataTemplate().read(new ExcelFileSource(getResourceFile("test3.xlsx")), 0, simpleRowMapper,
+				new ExcelDataTemplateOptions().withIgnoreFirstLinesCount(1));
+
+		assertThat(readData).isNotNull();
+		assertThat(readData).hasSize(2);
+		assertThat(readData.get(0).getId()).isEqualTo(1337);
+		assertThat(readData.get(0).getFirstName()).isEqualTo("John");
+		assertThat(readData.get(0).getLastName()).isEqualTo("Johnson");
+	}
 
 	public static class Data {
 
@@ -228,6 +275,18 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
 		private String lastName;
 		private Date date;
 		private BigDecimal sales;
+		
+		public Data() {
+			
+		}
+
+		public Data(int id, String firstName, String lastName, Date date, BigDecimal sales) {
+			this.id = id;
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.date = date;
+			this.sales = sales;
+		}
 
 		public int getId() {
 			return id;
