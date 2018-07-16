@@ -16,6 +16,9 @@ public abstract class CellValueFormatter<T> {
 	}
 	
 	public CellType getEffectiveCellType(Cell cell) {
+		if(cell == null) {
+			return null;
+		}
 		if(isCellFormula(cell)) {
 			return cell.getCachedFormulaResultTypeEnum();
 		}
@@ -23,6 +26,9 @@ public abstract class CellValueFormatter<T> {
 	}
 	
 	public boolean isCellFormula(Cell cell) {
+		if(cell == null || cell.getCellTypeEnum() == null) {
+			return false;
+		}
 		return cell.getCellTypeEnum() == CellType.FORMULA;
 	}
 	

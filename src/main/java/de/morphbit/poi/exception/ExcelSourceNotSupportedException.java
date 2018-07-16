@@ -2,7 +2,9 @@ package de.morphbit.poi.exception;
 
 public class ExcelSourceNotSupportedException extends Exception {
 
-    public ExcelSourceNotSupportedException() {
+	private static final long serialVersionUID = -2147529837172848775L;
+
+	public ExcelSourceNotSupportedException() {
     }
 
     public ExcelSourceNotSupportedException(String message) {
