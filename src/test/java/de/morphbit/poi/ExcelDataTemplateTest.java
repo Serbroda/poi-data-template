@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.morphbit.poi.exception.ExcelReadException;
@@ -224,7 +225,8 @@ public class ExcelDataTemplateTest extends AbstractResourceTest {
 		assertThat(headers.containsKey("DATE")).isTrue();
 		assertThat(headers.containsKey("SALES")).isTrue();
 	}
-	
+
+	@Ignore
 	@SuppressWarnings("deprecation")
 	@Test
 	public void itShouldWriteData() throws IOException, ExcelReadException {
